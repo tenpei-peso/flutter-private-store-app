@@ -51,7 +51,55 @@ class UserRepository {
     }
   }
 
-  _convertToUser(auth.User firebaseUser) {
+  Future<bool> emailRegister(String emailString, String passwordString) async {
+    try {
+      final auth.UserCredential userInfo = await _auth.createUserWithEmailAndPassword(
+          email: emailString,
+          password: passwordString
+      );
+      final firebaseUser = userInfo.user;
+      if (firebaseUser == null) {
+        return false;
+      }
+      //DBに登録
+      final isUserExistedInDb = await dbManager.searchUserInDb(firebaseUser);
+      if(!isUserExistedInDb) {
+        await dbManager.insertUser(_convertToUser(firebaseUser));
+      }
+      currentUser = await dbManager.getUserInfoFromDbById(firebaseUser.uid);
+      return true;
+
+    } catch(error) {
+      print("email register error");
+      return false;
+    }
+  }
+
+  Future<bool> emailSignIn(String emailString, String passwordString) async {
+    try {
+      final auth.UserCredential userInfo = await _auth.signInWithEmailAndPassword(
+          email: emailString,
+          password: passwordString
+      );
+      final firebaseUser = userInfo.user;
+      if (firebaseUser == null) {
+        return false;
+      }
+      //DBに登録
+      final isUserExistedInDb = await dbManager.searchUserInDb(firebaseUser);
+      if(!isUserExistedInDb) {
+        await dbManager.insertUser(_convertToUser(firebaseUser));
+      }
+      currentUser = await dbManager.getUserInfoFromDbById(firebaseUser.uid);
+      return true;
+    } catch(error) {
+      print("email register error");
+      return false;
+    }
+
+}
+
+  User _convertToUser(auth.User firebaseUser) {
     return User(
       userId: firebaseUser.uid,
       displayName: firebaseUser.displayName ?? "",
@@ -62,4 +110,4 @@ class UserRepository {
     );
   }
 
-}
+  }

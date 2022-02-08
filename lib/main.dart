@@ -31,13 +31,13 @@ class MyApp extends StatelessWidget {
       title: "Pesostagram",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.dark,
+        // brightness: Brightness.dark,
         elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
           primary: Colors.white38,
         )),
-        primaryIconTheme: IconThemeData(color: Colors.white),
-        iconTheme: IconThemeData(color: Colors.white),
+        primaryIconTheme: IconThemeData(color: Colors.blue),
+        iconTheme: IconThemeData(color: Colors.blue),
         fontFamily: RegularFont,
       ),
       home: FutureBuilder(
