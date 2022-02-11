@@ -38,9 +38,37 @@ class PostViewModel extends ChangeNotifier {
 
   }
 
+  Future<void> updateLocation(double latitude, double longitude) async {
+    location = await postRepository.updateLocation(latitude, longitude);
+    print("ロケーション: ${location}");
+    locationString = (location != null) ? _toLocationString(location!): "";
+    notifyListeners();
+  }
+
   String _toLocationString(Location location) {
     return location.country + " " + location.state + " " + location.city;
   }
+
+  Future<void> post() async {
+    if (imageFile == null) return ;
+
+    isProcessing = true;
+    notifyListeners();
+
+    await postRepository.post(UserRepository.currentUser!, imageFile!, caption,
+      location, locationString
+    );
+
+    isProcessing = false;
+    notifyListeners();
+  }
+
+  void cancelPost() {
+    isProcessing = false;
+    isImagePicked = false;
+    notifyListeners();
+  }
+
 
 
 

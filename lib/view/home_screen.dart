@@ -42,23 +42,23 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         items: [
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.home),
+              icon: FaIcon(FontAwesomeIcons.home, color: Colors.green,),
               label: "ホーム",
           ),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.search),
+              icon: FaIcon(FontAwesomeIcons.search, color: Colors.green),
               label: "検索",
           ),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.plusSquare),
+              icon: FaIcon(FontAwesomeIcons.plusSquare, color: Colors.green),
               label: "投稿",
           ),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.heart),
+              icon: FaIcon(FontAwesomeIcons.heart, color: Colors.green),
               label: "アクティビティ",
           ),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.user),
+              icon: FaIcon(FontAwesomeIcons.user, color: Colors.green),
               label: "ユーザー",
           ),
         ],

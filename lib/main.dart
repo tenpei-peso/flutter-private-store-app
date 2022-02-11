@@ -34,10 +34,10 @@ class MyApp extends StatelessWidget {
         // brightness: Brightness.dark,
         elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-          primary: Colors.white38,
+          primary: Colors.white,
         )),
         primaryIconTheme: IconThemeData(color: Colors.blue),
-        iconTheme: IconThemeData(color: Colors.blue),
+        iconTheme: IconThemeData(color: Colors.red),
         fontFamily: RegularFont,
       ),
       home: FutureBuilder(

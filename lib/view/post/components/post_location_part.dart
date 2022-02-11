@@ -22,7 +22,6 @@ class PostLocationPart extends StatelessWidget {
         subtitle: _latLngPart(postViewModel.location, context),
         trailing: IconButton(
           icon: FaIcon(FontAwesomeIcons.mapMarkerAlt),
-          // TODO mapButton
           onPressed: () => openMapScreen(context, postViewModel.location),
         ),
       ),

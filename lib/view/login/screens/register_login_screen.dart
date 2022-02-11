@@ -6,6 +6,7 @@ import 'package:pesostagram/utils/constants.dart';
 import 'package:pesostagram/view_models/login_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../../style.dart';
 import '../../home_screen.dart';
 
 class registerLoginScreen extends StatelessWidget {
@@ -70,7 +71,7 @@ class registerLoginScreen extends StatelessWidget {
                         ),
                         ElevatedButton(
                             onPressed: () => emailLogin(context, email, password, _key),
-                            child: Text("送信")
+                            child: Text("送信", style: buttonTextColor)
                         ),
                       ],
                     ),

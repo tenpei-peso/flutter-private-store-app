@@ -6,6 +6,8 @@ const BoldFont = "NotoSansJP_Bold";
 
 const loginTitleTextStyle = TextStyle(fontFamily: TitleFont, fontSize: 48.0);
 
+const buttonTextColor = TextStyle(fontFamily: RegularFont, color: Colors.black54);
+
 const postCaptionTextStyle = TextStyle(fontFamily: RegularFont, fontSize: 14.0);
 
 const postLocationTextStyle = TextStyle(fontFamily: RegularFont, fontSize: 16.0);

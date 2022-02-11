@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pesostagram/deta_models/location.dart';
+import 'package:pesostagram/view_models/post_view_model.dart';
+import 'package:provider/provider.dart';
 
 class MapScreen extends StatefulWidget {
   final Location location;
@@ -31,7 +33,7 @@ class _MapScreenState extends State<MapScreen> {
         title: Text("場所を選択"),
         actions: [
           IconButton(
-              onPressed: null,
+              onPressed: () => _onPlaceSelected(),
               icon: Icon(Icons.done)
           )
         ],
@@ -57,5 +59,11 @@ class _MapScreenState extends State<MapScreen> {
     setState(() {
       _markers[markerId] = marker;
     });
+  }
+
+  _onPlaceSelected() async {
+    final postViewModel = context.read<PostViewModel>();
+    await postViewModel.updateLocation(_latLng.latitude, _latLng.longitude);
+    Navigator.pop(context);
   }
 }
