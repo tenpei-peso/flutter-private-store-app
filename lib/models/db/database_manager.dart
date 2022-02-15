@@ -41,4 +41,39 @@ class DatabaseManager {
     await _db.collection("posts").doc(post.postId).set(post.toMap());
   }
 
+  Future<List<Post>> getPostMineAndFollowings(String userId) async {
+    // データの有無を判定
+    final query = await _db.collection("posts").get();
+    if (query.docs.length == 0) return [];
+
+    //フォロワーのIdをとってくる
+    var userIds = await getFollowingUserIds(userId);
+    //フォロワーと自分のIDを合わせる
+    userIds.add(userId);
+
+    var results = <Post>[];
+    //whereInは10以上の数があるとエラー出る
+    await _db.collection("posts").where("userId", whereIn: userIds).orderBy("postDateTime", descending: true).get()
+      .then((value) => value.docs.forEach((element) {
+        results.add(Post.fromMap(element.data()));
+    }));
+    return results;
+  }
+
+  Future<List<String>> getFollowingUserIds(String userId) async {
+    final query = await _db.collection("users").doc(userId).collection("following").get();
+    if (query.docs.length == 0) return [];
+
+    var userIds = <String>[];
+    query.docs.forEach((id) {
+      userIds.add(id.data()["userId"]);
+    });
+    return userIds;
+
+  }
+// TODO
+  // Future<List<Post>> getPostsByUser(String userId) {
+  //
+  // }
+
 }

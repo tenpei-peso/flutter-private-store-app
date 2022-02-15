@@ -45,7 +45,7 @@ class PostRepository {
         postId: Uuid().v1(),
         userId: currentUser.userId,
         imageUrl: imageUrl,
-        imageStoragePath: storageId,
+        imageStoragePath: storageId, //fire storageのid
         caption: caption,
         locationString: locationString,
         latitude: (location != null) ? location.latitude : 0.0,
@@ -54,6 +54,16 @@ class PostRepository {
     );
     await dbManager.insertPost(post);
 
+  }
+
+  Future<List<Post>?> getPost(FeedMode feedMode, User feedUser) async {
+    if (feedMode == FeedMode.FROM_FEED) {
+      //TODO me + follower
+      return await dbManager.getPostMineAndFollowings(feedUser.userId);
+    } else {
+      //TODO profileUser
+      // return dbManager.getPostsByUser(feedUser.userId);
+    }
   }
 
 }

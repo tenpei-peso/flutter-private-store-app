@@ -8,6 +8,8 @@ import 'package:pesostagram/view_models/post_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../view_models/feed_view_model.dart';
+
 List<SingleChildWidget> globalProviders = [
   ...independentModels,
   ...dependentModels,
@@ -44,6 +46,12 @@ List<SingleChildWidget> viewModels = [
   ),
   ChangeNotifierProvider<PostViewModel>(
     create: (context) => PostViewModel(
+      userRepository: context.read<UserRepository>(),
+      postRepository: context.read<PostRepository>(),
+    ),
+  ),
+  ChangeNotifierProvider<FeedViewModel>(
+    create: (context) => FeedViewModel(
       userRepository: context.read<UserRepository>(),
       postRepository: context.read<PostRepository>(),
     ),

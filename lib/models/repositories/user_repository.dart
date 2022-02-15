@@ -110,6 +110,10 @@ class UserRepository {
     );
   }
 
+  Future<User> getUserById(String userId) async {
+    return await dbManager.getUserInfoFromDbById(userId);
+  }
+
 
 
   }
