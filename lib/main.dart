@@ -8,12 +8,16 @@ import 'package:pesostagram/view_models/login_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
+import 'package:timeago/timeago.dart' as timeAgo;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  
+  timeAgo.setLocaleMessages("ja", timeAgo.JaMessages());
+  
   runApp(
       MultiProvider(
         providers: globalProviders,

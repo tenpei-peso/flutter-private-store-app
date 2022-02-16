@@ -10,10 +10,13 @@ class FeedViewModel extends ChangeNotifier {
   final UserRepository userRepository;
   final PostRepository postRepository;
 
+
   FeedViewModel({required this.userRepository, required this.postRepository});
 
   bool isProcessing = false;
   List<Post>? posts = [];
+
+  String caption = "";
 
   late User feedUser; //ページ毎に必要なユーザーの情報
   User get currentUser => UserRepository.currentUser!;
@@ -37,6 +40,18 @@ class FeedViewModel extends ChangeNotifier {
 
   Future<User> getPostUserInfo(String userId) async {
     return await userRepository.getUserById(userId);
+  }
+
+  Future<void> updatePost(Post post, FeedMode feedMode) async {
+    isProcessing = true;
+
+    await postRepository.updatePost(
+      post.copyWith(caption: caption)
+    );
+
+    await getPosts(feedMode);
+    isProcessing = false;
+    notifyListeners();
   }
 
 }

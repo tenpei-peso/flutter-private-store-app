@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:pesostagram/style.dart';
+import 'package:pesostagram/utils/constants.dart';
 import 'package:pesostagram/view_models/post_view_model.dart';
 import 'package:provider/src/provider.dart';
 
+import '../../../view_models/feed_view_model.dart';
+
 class PostCaptionInputTextField extends StatefulWidget {
+  final String? caption;
+  final PostCaptionOpenMode? from;
+
+  const PostCaptionInputTextField({this.caption, this.from});
 
   @override
   _PostCaptionInputTextFieldState createState() => _PostCaptionInputTextFieldState();
@@ -20,6 +27,10 @@ class _PostCaptionInputTextFieldState extends State<PostCaptionInputTextField> {
     _captionController.addListener(() {
       _onCaptionUpdated();
     });
+    if(widget.from == PostCaptionOpenMode.FROM_FEED) {
+      _captionController.text = widget.caption ?? "";
+    }
+
     super.initState();
   }
 
@@ -38,14 +49,21 @@ class _PostCaptionInputTextFieldState extends State<PostCaptionInputTextField> {
       keyboardType: TextInputType.multiline,
       maxLines: null,
       decoration: InputDecoration(
-        hintText: "オプション",
+        hintText: "キャプション",
         border: InputBorder.none,
       ),
     );
   }
 
   _onCaptionUpdated() {
-    final viewModel = context.read<PostViewModel>();
-    viewModel.caption = _captionController.text;
+    if (widget.from == PostCaptionOpenMode.FROM_FEED) {
+      final viewModel = context.read<FeedViewModel>();
+      viewModel.caption = _captionController.text;
+    } else {
+      final viewModel = context.read<PostViewModel>();
+      viewModel.caption = _captionController.text;
+    }
+
+
   }
 }
