@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pesostagram/utils/constants.dart';
 import 'package:pesostagram/view/common/components/user_card.dart';
 import 'package:pesostagram/view/feed/components/screens/feed_post_edit_screen.dart';
+import 'package:share/share.dart';
+
 
 import '../../../../deta_models/post.dart';
 import '../../../../deta_models/user.dart';
@@ -63,6 +65,9 @@ class FeedPostHeaderPart extends StatelessWidget {
                 feedMode: feedMode
             )
         ));
+      break;
+      case PostMenu.SHARE:
+        Share.share(post.imageUrl, subject: post.caption);
 
     } //switch
   }

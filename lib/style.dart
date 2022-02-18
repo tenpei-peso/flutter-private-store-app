@@ -35,3 +35,5 @@ const TimeTextStyle = TextStyle(
 const commentNameStyle = TextStyle(fontFamily: BoldFont, fontSize: 13.0);
 
 const commentContentStyle = TextStyle(fontFamily: RegularFont, fontSize: 13.0);
+
+const commentInputTextStyle = TextStyle(fontFamily: RegularFont, fontSize: 14.0);

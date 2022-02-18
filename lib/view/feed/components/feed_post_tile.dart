@@ -38,7 +38,7 @@ class FeedPostTile extends StatelessWidget {
               children: [
                 FeedPostHeaderPart(currentUser: currentUser, post: post, postUser: postUser, feedMode: feedMode,),
                 ImageFromUrl(imageUrl: post.imageUrl,),
-                FeedPostLikesPart(),
+                FeedPostLikesPart(post: post, postUser: postUser,),
                 FeedPostCommentsPart(post: post, postUser: postUser,),
               ],
             );

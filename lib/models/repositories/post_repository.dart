@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pesostagram/deta_models/comments.dart';
 import 'package:pesostagram/deta_models/location.dart';
 import 'package:pesostagram/deta_models/post.dart';
 import 'package:pesostagram/deta_models/user.dart';
@@ -68,6 +69,18 @@ class PostRepository {
 
   Future<void> updatePost(Post updatePost) async {
     return await dbManager.updatePost(updatePost);
+  }
+
+  Future<void> postComment(Post post, User postUser, String commentString) async {
+    final comment = Comment(
+        commentId: Uuid().v1(),
+        postId: post.postId,
+        commentUserId: postUser.userId,
+        comment: commentString,
+        commentDataTime: DateTime.now()
+    );
+    await dbManager.postComment(comment);
+
   }
 
 }
