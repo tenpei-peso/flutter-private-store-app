@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           primary: Colors.white,
         )),
         primaryIconTheme: IconThemeData(color: Colors.blue),
-        iconTheme: IconThemeData(color: Colors.red),
+        iconTheme: IconThemeData(color: Colors.black38),
         fontFamily: RegularFont,
       ),
       home: FutureBuilder(

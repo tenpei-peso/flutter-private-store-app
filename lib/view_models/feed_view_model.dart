@@ -3,6 +3,8 @@ import 'package:pesostagram/models/repositories/post_repository.dart';
 import 'package:pesostagram/models/repositories/user_repository.dart';
 import 'package:pesostagram/utils/constants.dart';
 
+import '../deta_models/comments.dart';
+import '../deta_models/like.dart';
 import '../deta_models/post.dart';
 import '../deta_models/user.dart';
 
@@ -53,5 +55,25 @@ class FeedViewModel extends ChangeNotifier {
     isProcessing = false;
     notifyListeners();
   }
+
+  Future<List<Comment>> getComments(String postId) async {
+    return await postRepository.getComments(postId);
+  }
+
+  Future<void> likeIt(Post post) async {
+    await postRepository.likeIt(post, currentUser);
+    notifyListeners(); //DB追加した後、FutureBuilderでいいね数取るので
+  }
+
+  Future<void> unLikIt(Post post) async {
+    await postRepository.unLikeIt(post, currentUser);
+    notifyListeners();
+  }
+
+  Future<LikeResult> getLikeResult(String postId) async {
+    return await postRepository.getLikeResult(postId, currentUser);
+  }
+
+
 
 }

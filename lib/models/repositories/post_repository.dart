@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pesostagram/deta_models/comments.dart';
+import 'package:pesostagram/deta_models/like.dart';
 import 'package:pesostagram/deta_models/location.dart';
 import 'package:pesostagram/deta_models/post.dart';
 import 'package:pesostagram/deta_models/user.dart';
@@ -82,5 +83,44 @@ class PostRepository {
     await dbManager.postComment(comment);
 
   }
+
+  Future<List<Comment>> getComments(String postId) async {
+    return await dbManager.getComments(postId);
+  }
+
+  Future<void> deleteComment(String deleteCommentId) async {
+    return await dbManager.deleteComment(deleteCommentId);
+  }
+
+  Future<void> likeIt(Post post, User currentUser) async {
+    final like = Like(
+        likeId: Uuid().v1(),
+        postId: post.postId,
+        likeUserId: currentUser.userId,
+        likeDateTime: DateTime.now()
+    );
+    await dbManager.likeIt(like);
+  }
+
+  Future<void> unLikeIt(Post post, User currentUser) async {
+    await dbManager.unLikeIt(post, currentUser);
+  }
+
+  Future<LikeResult> getLikeResult(String postId, User currentUser) async {
+    //いいねの取得
+    final likes = await dbManager.getLikes(postId);
+    //いいねしたかどうか判定
+    var isLikedPost = false;
+    //for in使うのはbreakが使えるから。foreachだとリスト全部を回してしまう。
+    for (var like in likes) {
+      if(like.likeUserId == currentUser.userId) {
+        isLikedPost = true;
+        break;
+      }
+    }
+    return LikeResult(likes: likes, isLikedToThisPost: isLikedPost);
+  }
+
+
 
 }

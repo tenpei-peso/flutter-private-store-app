@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pesostagram/deta_models/comments.dart';
+import 'package:pesostagram/deta_models/like.dart';
 import 'package:pesostagram/deta_models/post.dart';
 import 'package:pesostagram/deta_models/user.dart';
 
@@ -81,6 +82,56 @@ class DatabaseManager {
   Future<void> postComment(Comment comment) async {
     await _db.collection("comments").doc(comment.commentId).set(comment.toMap());
   }
+
+  Future<List<Comment>> getComments(String postId) async {
+    final query = await _db.collection("comments").get();
+    if (query.docs.length == 0) return [];
+
+    var results = <Comment>[];
+    await _db.collection("comments").where("postId", isEqualTo: postId).orderBy("commentDataTime").get()
+    .then((value) {
+      value.docs.forEach((element) {
+        results.add(Comment.fromMap(element.data()));
+      });
+    });
+    return results;
+  }
+
+  Future<void> deleteComment(String deleteCommentId) async {
+    final reference = _db.collection("comments").doc(deleteCommentId);
+    await reference.delete();
+  }
+
+  Future<void> likeIt(Like like) async {
+    await _db.collection("likes").doc(like.likeId).set(like.toMap());
+  }
+
+  Future<void> unLikeIt(Post post, User currentUser) async {
+    //全いいねの中から今の投稿に関するものかつ、自分がいいねしたものをとってくる。
+    final likeRef = await _db.collection("likes")
+        .where("postId", isEqualTo: post.postId)
+        .where("likeUserId", isEqualTo: currentUser.userId).get();
+
+    likeRef.docs.forEach((element) async {
+      print(element.data());
+      await _db.collection("likes").doc(element.id).delete();
+    });
+  }
+
+  Future<List<Like>> getLikes(String postId) async {
+    final query = await _db.collection("likes").get();
+    if (query.docs.length == 0) return [];
+    var results = <Like>[];
+    await _db.collection("likes").where("postId", isEqualTo: postId).orderBy("likeDateTime").get()
+        .then((value) {
+      value.docs.forEach((element) {
+        results.add(Like.fromMap(element.data()));
+      });
+    });
+    return results;
+  }
+
+
 
 // TODO
   // Future<List<Post>> getPostsByUser(String userId) {

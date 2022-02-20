@@ -28,11 +28,15 @@ class FeedSubPage extends StatelessWidget {
           } else {
             return (model.posts == null)
                 ? Container()
-                : ListView.builder(
-                  itemCount: model.posts!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return FeedPostTile( feedMode: feedMode, post: model.posts![index],);
-                  }
+                : RefreshIndicator(   //上にスクロールすると更新
+                  onRefresh: () => model.getPosts(feedMode),
+                  child: ListView.builder(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    itemCount: model.posts!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return FeedPostTile( feedMode: feedMode, post: model.posts![index],);
+                    }
+                  ),
                 );
           }
 
