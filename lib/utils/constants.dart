@@ -23,3 +23,13 @@ enum PostMenu {
   DELETE,
   SHARE
 }
+
+enum ProfileMode {
+  MYSELF,
+  OTHER,
+}
+
+enum ProfileSettingMenu {
+  THEME_CHANGE,
+  SIGN_OUT
+}

@@ -97,7 +97,14 @@ class UserRepository {
       return false;
     }
 
-}
+  }
+
+  Future<void> signOut() async {
+    await _googleSignIn.signOut();
+    await _auth.signOut();
+    //staticで残しているので前のログイン情報残るからnullにする
+    currentUser = null;
+  }
 
   User _convertToUser(auth.User firebaseUser) {
     return User(
@@ -112,6 +119,15 @@ class UserRepository {
 
   Future<User> getUserById(String userId) async {
     return await dbManager.getUserInfoFromDbById(userId);
+  }
+
+  Future<int> getNumberOfFollowers(User profileUser) async {
+    return (await dbManager.getFollowerUserIds(profileUser.userId)).length;
+  }
+
+  Future<int> getNumberOfFollowings(User profileUser) async {
+    return (await dbManager.getFollowingUserIds(profileUser.userId)).length;
+
   }
 
 

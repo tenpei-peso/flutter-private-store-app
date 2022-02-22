@@ -39,6 +39,18 @@ class DatabaseManager {
     return await uploadTask.then((TaskSnapshot snapshot) => snapshot.ref.getDownloadURL());
   }
 
+  Future<List<Post>> getPostsByUser(String userId) async {
+    final query = await _db.collection("posts").get();
+    if (query.docs.length == 0) return [];
+
+    var results = <Post>[];
+    await _db.collection("posts").where("userId", isEqualTo: userId).orderBy("postDateTime", descending: true).get()
+        .then((value) => value.docs.forEach((element) {
+      results.add(Post.fromMap(element.data()));
+    }));
+    return results;
+  }
+
   Future<void> insertPost(Post post) async {
     await _db.collection("posts").doc(post.postId).set(post.toMap());
   }
@@ -63,7 +75,7 @@ class DatabaseManager {
   }
 
   Future<List<String>> getFollowingUserIds(String userId) async {
-    final query = await _db.collection("users").doc(userId).collection("following").get();
+    final query = await _db.collection("users").doc(userId).collection("followings").get();
     if (query.docs.length == 0) return [];
 
     var userIds = <String>[];
@@ -72,6 +84,16 @@ class DatabaseManager {
     });
     return userIds;
 
+  }
+
+  Future<List> getFollowerUserIds(String userId) async {
+    final query = await _db.collection("users").doc(userId).collection("followers").get();
+    if (query.docs.length == 0) return [];
+    var userIds = [];
+    query.docs.forEach((id) {
+      userIds.add(id.data()["userId"]);
+    });
+    return userIds;
   }
 
   Future<void> updatePost(Post updatePost) async {
@@ -131,11 +153,29 @@ class DatabaseManager {
     return results;
   }
 
+  //投稿、コメント、いいね、storageの画像全て消す
+  Future<void> deletePost(String postId, String imageStoragePath) async {
+    //Post
+    final postRef = _db.collection("posts").doc(postId);
+    await postRef.delete();
 
+    //Comment
+    final commentRef = await _db.collection("comments").where("postId", isEqualTo: postId).get();
+    commentRef.docs.forEach((element) async {
+      final ref = _db.collection("comments").doc(element.id);
+      await ref.delete();
+    });
 
-// TODO
-  // Future<List<Post>> getPostsByUser(String userId) {
-  //
-  // }
+    //Likes
+    final likeRef = await _db.collection("likes").where("postId", isEqualTo: postId).get();
+    likeRef.docs.forEach((element) async {
+      final ref = _db.collection("likes").doc(element.id);
+      await ref.delete();
+    });
+
+    //Storage
+    final storageRef = FirebaseStorage.instance.ref().child(imageStoragePath);
+    storageRef.delete();
+  }
 
 }

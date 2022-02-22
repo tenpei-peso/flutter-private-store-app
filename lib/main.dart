@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
             style: ElevatedButton.styleFrom(
           primary: Colors.white,
         )),
-        primaryIconTheme: IconThemeData(color: Colors.blue),
+        primaryIconTheme: IconThemeData(color: Colors.green),
         iconTheme: IconThemeData(color: Colors.black38),
         fontFamily: RegularFont,
       ),

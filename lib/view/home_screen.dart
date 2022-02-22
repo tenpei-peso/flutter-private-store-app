@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pesostagram/utils/constants.dart';
 import 'package:pesostagram/view/activities/pages/activities_page.dart';
 import 'package:pesostagram/view/feed/pages/feed_page.dart';
 import 'package:pesostagram/view/post/pages/post_page.dart';
@@ -23,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       SearchPage(),
       PostPage(),
       ActivitiesPage(),
-      ProfilePage(),
+      ProfilePage(profileMode: ProfileMode.MYSELF,),
     ];
     super.initState();
   }

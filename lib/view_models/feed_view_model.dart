@@ -16,7 +16,7 @@ class FeedViewModel extends ChangeNotifier {
   FeedViewModel({required this.userRepository, required this.postRepository});
 
   bool isProcessing = false;
-  List<Post>? posts = [];
+  List<Post> posts = [];
 
   String caption = "";
 
@@ -72,6 +72,17 @@ class FeedViewModel extends ChangeNotifier {
 
   Future<LikeResult> getLikeResult(String postId) async {
     return await postRepository.getLikeResult(postId, currentUser);
+  }
+
+  Future<void> deletePost(Post post, FeedMode feedMode) async {
+    isProcessing = true;
+    notifyListeners();
+
+    await postRepository.deletePost(post.postId, post.imageStoragePath);
+    await getPosts(feedMode);
+
+    isProcessing = false;
+    notifyListeners();
   }
 
 

@@ -37,3 +37,7 @@ const commentNameStyle = TextStyle(fontFamily: BoldFont, fontSize: 14.0);
 const commentContentStyle = TextStyle(fontFamily: RegularFont, fontSize: 13.0);
 
 const commentInputTextStyle = TextStyle(fontFamily: RegularFont, fontSize: 14.0);
+
+const profileRecodeScoreTextStyle = TextStyle(fontFamily: BoldFont, fontSize: 20.0);
+
+const profileRecodeTitleTextStyle = TextStyle(fontFamily: RegularFont, fontSize: 14.0);

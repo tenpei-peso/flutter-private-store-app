@@ -58,13 +58,11 @@ class PostRepository {
 
   }
 
-  Future<List<Post>?> getPost(FeedMode feedMode, User feedUser) async {
+  Future<List<Post>> getPost(FeedMode feedMode, User feedUser) async {
     if (feedMode == FeedMode.FROM_FEED) {
-      //TODO me + follower
       return await dbManager.getPostMineAndFollowings(feedUser.userId);
     } else {
-      //TODO profileUser
-      // return dbManager.getPostsByUser(feedUser.userId);
+      return dbManager.getPostsByUser(feedUser.userId);
     }
   }
 
@@ -119,6 +117,10 @@ class PostRepository {
       }
     }
     return LikeResult(likes: likes, isLikedToThisPost: isLikedPost);
+  }
+
+  Future<void> deletePost(String postId, String imageStoragePath) async {
+    await dbManager.deletePost(postId, imageStoragePath);
   }
 
 
