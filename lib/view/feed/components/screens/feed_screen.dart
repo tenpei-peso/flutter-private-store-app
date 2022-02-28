@@ -15,9 +15,10 @@ class FeedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         title: Text("投稿"),
       ),
-      body: FeedSubPage(feedMode: feedMode, index: index,),
+      body: FeedSubPage(feedMode: feedMode, index: index, feedUser: feedUser,),
     );
   }
 }

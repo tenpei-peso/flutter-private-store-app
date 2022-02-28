@@ -68,6 +68,9 @@ dependencies:
 
   share: ^2.0.4
 
+  scrollable_positioned_list: ^0.2.3
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

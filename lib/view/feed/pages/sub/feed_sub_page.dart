@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pesostagram/utils/constants.dart';
 import 'package:pesostagram/view_models/feed_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../deta_models/user.dart';
 import '../../components/feed_post_tile.dart';
@@ -33,11 +34,12 @@ class FeedSubPage extends StatelessWidget {
                 ? Container()
                 : RefreshIndicator(   //上にスクロールすると更新
                   onRefresh: () => model.getPosts(feedMode),
-                  child: ListView.builder(
+                  child: ScrollablePositionedList.builder(
+                    initialScrollIndex: index,
                     physics: AlwaysScrollableScrollPhysics(),
                     itemCount: model.posts.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return FeedPostTile( feedMode: feedMode, post: model.posts[index],);
+                      return FeedPostTile(feedMode: feedMode, post: model.posts[index],);
                     }
                   ),
                 );

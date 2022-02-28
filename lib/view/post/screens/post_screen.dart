@@ -24,6 +24,7 @@ class PostScreen extends StatelessWidget {
         builder: (context, model, child) {
           return Scaffold(
             appBar: AppBar(
+              backgroundColor: Colors.green,
               leading: model.isProcessing
                   ? Container()
                   : IconButton(

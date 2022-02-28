@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pesostagram/deta_models/user.dart';
 import 'package:pesostagram/utils/constants.dart';
+import 'package:pesostagram/view/profile/screens/edit_profile_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../style.dart';
@@ -34,7 +35,7 @@ class ProfileBio extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //TODO bio
-              Text("バイオ"),
+              Text(profileViewModel.profileUser.bio),
               SizedBox(height: 40.0,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -104,12 +105,23 @@ class ProfileBio extends StatelessWidget {
   }
 
   _button(BuildContext context, User profileUser) {
+    final profileViewModel = context.read<ProfileViewModel>();
+    final isFollowing = profileViewModel.isFollowingProfileUser;
+
     return ElevatedButton(
       child: (profileMode == ProfileMode.MYSELF)
-      ? Text("プロフィール編集")
-      //TODO フォローしてる場合はフォロー解除
-      : Text("フォロー"),
-      onPressed: null,
+      ? Text("プロフィール編集", style: TextStyle(color: Colors.black54),)
+      : isFollowing
+        ? Text("フォロー解除", style: TextStyle(color: Colors.black54),)
+        : Text("フォロー", style: TextStyle(color: Colors.black54),),
+
+      onPressed: () {
+        if(profileMode == ProfileMode.MYSELF) {
+          _openEditProfileScreen(context);
+        } else {
+          isFollowing ? _unFollow(context) : _follow(context);
+        }
+      },
       //スタイル
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -122,6 +134,23 @@ class ProfileBio extends StatelessWidget {
       ),
     );
   }
+
+  _openEditProfileScreen(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => EditProfileScreen()
+    ));
+  }
+  //TODO
+  _follow(BuildContext context) {
+    final profileViewModel = context.read<ProfileViewModel>();
+    profileViewModel.follow();
+  }
+
+  _unFollow(BuildContext context) {
+    final profileViewModel = context.read<ProfileViewModel>();
+    profileViewModel.unFollow();
+  }
+
 
 
 }

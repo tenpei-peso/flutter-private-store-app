@@ -20,6 +20,7 @@ class FeedPostHeaderPart extends StatelessWidget {
 
   const FeedPostHeaderPart({required this.postUser, required this.post, required this.currentUser, required this.feedMode});
 
+
   @override
   Widget build(BuildContext context) {
     return UserCard(

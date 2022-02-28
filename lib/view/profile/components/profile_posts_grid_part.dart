@@ -41,7 +41,7 @@ class ProfilePostsGridPart extends StatelessWidget {
           feedUser: feedUser,
           index: index,
           feedMode: FeedMode.FROM_PROFILE,
-        );
+        )
     ));
   }
 }

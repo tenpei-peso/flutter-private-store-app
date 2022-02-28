@@ -7,6 +7,7 @@ import 'package:pesostagram/deta_models/comments.dart';
 import 'package:pesostagram/deta_models/like.dart';
 import 'package:pesostagram/deta_models/post.dart';
 import 'package:pesostagram/deta_models/user.dart';
+import 'package:pesostagram/models/repositories/user_repository.dart';
 
 class DatabaseManager {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -176,6 +177,66 @@ class DatabaseManager {
     //Storage
     final storageRef = FirebaseStorage.instance.ref().child(imageStoragePath);
     storageRef.delete();
+  }
+
+  Future<void> updateProfile(User updateUser) async {
+    final reference = _db.collection("users").doc(updateUser.userId);
+    await reference.update(updateUser.toMap());
+  }
+
+  Future<List<User>> searchUsers(String queryString) async {
+    final query = await _db.collection("users").orderBy("inAppUserName")
+        .startAt([queryString]).endAt([queryString + "\uf8ff"]).get();  //検索でお決まり
+    if (query.docs.length == 0) return [];
+
+    var soughtUsers = <User>[];
+    query.docs.forEach((element) {
+      final selectedUser = User.fromMap(element.data());
+      if(selectedUser.userId != UserRepository.currentUser?.userId) {
+        soughtUsers.add(selectedUser);
+      }
+    });
+
+    return soughtUsers;
+
+  }
+
+  Future<void> follow(User profileUser, User currentUser) async {
+    //currentUserからはfollowする
+    await _db.collection("users").doc(currentUser.userId)
+        .collection("followings").doc(profileUser.userId)
+        .set({"userId": profileUser.userId});
+
+    //profileUserはfollowされる
+    await _db.collection("users").doc(profileUser.userId)
+    .collection("followers").doc(currentUser.userId)
+    .set({"userId": currentUser.userId});
+  }
+
+  Future<bool> checkIsFollowing(User profileUser, User currentUser) async {
+    final query = await _db.collection("users").doc(currentUser.userId).collection("followings").get();
+    if (query.docs.length == 0) return false;
+
+    final checkQuery = await _db.collection("users").doc(currentUser.userId).collection("followings")
+    .where("userId", isEqualTo: profileUser.userId).get();
+
+    if(checkQuery.docs.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<void> unFollow(User profileUser, User currentUser) async {
+    //currentUserのfollowingから削除
+    await _db.collection("users").doc(currentUser.userId)
+        .collection("followings").doc(profileUser.userId)
+        .delete();
+    //profileUserのfollowersから削除
+    await _db.collection("users").doc(profileUser.userId)
+        .collection("followers").doc(currentUser.userId)
+        .delete();
+
   }
 
 }

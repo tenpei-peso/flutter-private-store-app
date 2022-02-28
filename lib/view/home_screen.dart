@@ -21,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     _pages = [
       FeedPage(),
-      SearchPage(),
       PostPage(),
       ActivitiesPage(),
       ProfilePage(profileMode: ProfileMode.MYSELF,),
@@ -46,10 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: FaIcon(FontAwesomeIcons.home, color: Colors.green,),
               label: "ホーム",
           ),
-          BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.search, color: Colors.green),
-              label: "検索",
-          ),
+          // BottomNavigationBarItem(
+          //     icon: FaIcon(FontAwesomeIcons.map, color: Colors.green),
+          //     label: "マップ",
+          // ),
           BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.plusSquare, color: Colors.green),
               label: "投稿",

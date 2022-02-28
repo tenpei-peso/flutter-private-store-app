@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pesostagram/deta_models/user.dart';
 import 'package:pesostagram/models/db/database_manager.dart';
+import 'package:uuid/uuid.dart';
 
 class UserRepository {
   final DatabaseManager dbManager;
@@ -130,6 +133,47 @@ class UserRepository {
 
   }
 
+  Future<void> updateProfile(User profileUser, String name, String bio, String photoUrl, bool isImageFromFile) async {
+    var updatePhotoUrl;
 
+    if(isImageFromFile) {
+      //storageのURLとってくる
+      final updatePhotoFile = File(photoUrl);
+      final storagePath = Uuid().v1();
+      updatePhotoUrl = await dbManager.uploadImageStorage(updatePhotoFile, storagePath);
+    }
+
+    final updateUser = profileUser.copyWith(
+      inAppUserName: name,
+      bio: bio,
+      photoUrl: isImageFromFile ? updatePhotoUrl : profileUser.photoUrl,
+    );
+
+    await dbManager.updateProfile(updateUser);
+
+  }
+
+  Future<void> getCurrentUserById(String userId) async {
+    currentUser = await dbManager.getUserInfoFromDbById(userId);
+  }
+
+  Future<List<User>> searchUsers(String query) async {
+    return  dbManager.searchUsers(query);
+  }
+
+  Future<void> follow(User profileUser) async {
+    if(currentUser != null) await dbManager.follow(profileUser, currentUser!);
+  }
+
+  Future<bool> checkIsFollowing(User profileUser) async {
+    return (currentUser != null)
+        ? await dbManager.checkIsFollowing(profileUser, currentUser!)
+        : false;
+
+  }
+
+  Future<void> unFollow(User profileUser) async {
+     if(currentUser != null) await dbManager.unFollow(profileUser, currentUser!);
+  }
 
   }

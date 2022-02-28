@@ -41,3 +41,5 @@ const commentInputTextStyle = TextStyle(fontFamily: RegularFont, fontSize: 14.0)
 const profileRecodeScoreTextStyle = TextStyle(fontFamily: BoldFont, fontSize: 20.0);
 
 const profileRecodeTitleTextStyle = TextStyle(fontFamily: RegularFont, fontSize: 14.0);
+
+const changeProfilePhotoTextStyle = TextStyle(fontFamily: RegularFont, fontSize: 18.0, color: Colors.blue);

@@ -12,7 +12,6 @@ class FeedViewModel extends ChangeNotifier {
   final UserRepository userRepository;
   final PostRepository postRepository;
 
-
   FeedViewModel({required this.userRepository, required this.postRepository});
 
   bool isProcessing = false;
@@ -20,7 +19,9 @@ class FeedViewModel extends ChangeNotifier {
 
   String caption = "";
 
-  late User feedUser; //ページ毎に必要なユーザーの情報
+  late User feedUser;
+
+  //ページ毎に必要なユーザーの情報
   User get currentUser => UserRepository.currentUser!;
 
   void setFeedUser(FeedMode feedMode, User? user) {
