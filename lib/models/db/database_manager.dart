@@ -27,6 +27,7 @@ class DatabaseManager {
     await _db.collection("users").doc(user.userId).set(user.toMap());
   }
 
+  //userIdからユーザーとってくる
   Future<User> getUserInfoFromDbById(String userId) async {
     final query = await _db.collection("users").where(
         "userId", isEqualTo: userId).get();
@@ -75,6 +76,7 @@ class DatabaseManager {
     return results;
   }
 
+  // 渡したidのユーザのフォローしているユーザーのidとってくる
   Future<List<String>> getFollowingUserIds(String userId) async {
     final query = await _db.collection("users").doc(userId).collection("followings").get();
     if (query.docs.length == 0) return [];
@@ -87,10 +89,11 @@ class DatabaseManager {
 
   }
 
-  Future<List> getFollowerUserIds(String userId) async {
+  // 渡したidのユーザのフォローされているユーザーのidとってくる
+  Future<List<String>> getFollowerUserIds(String userId) async {
     final query = await _db.collection("users").doc(userId).collection("followers").get();
     if (query.docs.length == 0) return [];
-    var userIds = [];
+    var userIds = <String>[];
     query.docs.forEach((id) {
       userIds.add(id.data()["userId"]);
     });
@@ -140,7 +143,7 @@ class DatabaseManager {
       await _db.collection("likes").doc(element.id).delete();
     });
   }
-
+  //いいねの数とってくる
   Future<List<Like>> getLikes(String postId) async {
     final query = await _db.collection("likes").get();
     if (query.docs.length == 0) return [];
@@ -152,6 +155,45 @@ class DatabaseManager {
       });
     });
     return results;
+  }
+  //いいねしたユーザーをとってくる
+  Future<List<User>> getLikesUsers(String postId) async {
+    final query = await _db.collection("likes").where("postId", isEqualTo: postId).get();
+    if (query.docs.length == 0) return [];
+    //いいねしたユーザーのIDとってくる
+    var userIds = <String>[];
+    query.docs.forEach((id) {
+      userIds.add(id.data()["likeUserId"]);
+    });
+    //IDをもとにユーザーのリストとってくる
+    var likesUsers = <User>[];
+    await Future.forEach(userIds, (String userId) async { //getUser関数は非同期なので、forEachの処理がawaitしないとうまくいかない
+      final user = await getUserInfoFromDbById(userId);
+      likesUsers.add(user);
+    });
+    return likesUsers;
+  }
+  //フォロー中のユーザとってくる
+  Future<List<User>> getFollowerUsers(String profileUserId) async {
+    final followerUserIds = await getFollowingUserIds(profileUserId);
+    var followerUsers = <User>[];
+    await Future.forEach(followerUserIds, (String userId) async {
+      final user = await getUserInfoFromDbById(userId);
+      followerUsers.add(user);
+    });
+    print("フォロー${followerUsers}");
+    return followerUsers;
+  }
+
+  //フォロワーとってくる
+  Future<List<User>> getFollowingUsers(String profileUserId) async {
+    final followingUserIds = await getFollowerUserIds(profileUserId);
+    var followingUsers = <User>[];
+    await Future.forEach(followingUserIds, (String userId) async {
+      final user = await getUserInfoFromDbById(userId);
+      followingUsers.add(user);
+    });
+    return followingUsers;
   }
 
   //投稿、コメント、いいね、storageの画像全て消す
@@ -238,5 +280,9 @@ class DatabaseManager {
         .delete();
 
   }
+
+
+
+
 
 }

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pesostagram/deta_models/user.dart';
 import 'package:pesostagram/models/db/database_manager.dart';
+import 'package:pesostagram/utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
 class UserRepository {
@@ -174,6 +175,27 @@ class UserRepository {
 
   Future<void> unFollow(User profileUser) async {
      if(currentUser != null) await dbManager.unFollow(profileUser, currentUser!);
+  }
+
+  Future<List<User>> getCaresUserData(String id, WhoCaresMeMode mode) async {
+    var result = <User>[];
+    
+    switch (mode) {
+      case WhoCaresMeMode.LIKE:
+        final postId = id;
+        result = await dbManager.getLikesUsers(postId);
+        break;
+      case WhoCaresMeMode.FOLLOWINGS:
+        final profileUserId = id;
+        result = await dbManager.getFollowerUsers(profileUserId);
+        break;
+      case WhoCaresMeMode.FOLLOWED:
+        final profileUserId = id;
+        result = await dbManager.getFollowingUsers(profileUserId);
+        break;
+    }
+    return result;
+
   }
 
   }

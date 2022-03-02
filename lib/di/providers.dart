@@ -5,6 +5,7 @@ import 'package:pesostagram/models/repositories/post_repository.dart';
 import 'package:pesostagram/models/repositories/user_repository.dart';
 import 'package:pesostagram/view_models/login_view_model.dart';
 import 'package:pesostagram/view_models/post_view_model.dart';
+import 'package:pesostagram/view_models/who_cares_me_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -73,6 +74,11 @@ List<SingleChildWidget> viewModels = [
   ),
   ChangeNotifierProvider<SearchViewModel>(
     create: (context) => SearchViewModel(
+      userRepository: context.read<UserRepository>(),
+    ),
+  ),
+  ChangeNotifierProvider<WhoCaresMeViewModel>(
+    create: (context) => WhoCaresMeViewModel(
       userRepository: context.read<UserRepository>(),
     ),
   ),

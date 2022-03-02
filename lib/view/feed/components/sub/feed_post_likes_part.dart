@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pesostagram/utils/constants.dart';
 import 'package:pesostagram/view/comments/screens/comments_screen.dart';
+import 'package:pesostagram/view/who_cares_me/screen/who_cares_me_screen.dart';
 import 'package:pesostagram/view_models/feed_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +53,10 @@ class FeedPostLikesPart extends StatelessWidget {
                   ],
                 ),
 
-                Text("${likeResult.likes.length.toString()} いいね", style: numberOfLikesTextStyle,),
+                GestureDetector(
+                    onTap: () => _checkLikeUsers(context),
+                    child: Text("${likeResult.likes.length.toString()} いいね", style: numberOfLikesTextStyle,)
+                ),
               ],
             );
           } else {
@@ -77,5 +82,11 @@ class FeedPostLikesPart extends StatelessWidget {
   void unLikeIt(BuildContext context) async {
     final feedViewModel = context.read<FeedViewModel>();
     await feedViewModel.unLikIt(post);
+  }
+
+  _checkLikeUsers(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => WhoCaresMeScreen(mode: WhoCaresMeMode.LIKE, id: post.postId,)
+    ));
   }
 }

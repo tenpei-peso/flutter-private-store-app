@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../style.dart';
 import '../../../../view_models/profile_view_model.dart';
+import '../../../who_cares_me/screen/who_cares_me_screen.dart';
 
 class ProfileBio extends StatelessWidget {
   final ProfileMode profileMode; //自分の投稿だとプロフ編集。他だとフォロー
@@ -64,6 +65,7 @@ class ProfileBio extends StatelessWidget {
                       context: context,
                       score: (snapshot.hasData ) ? snapshot.data! : 0,
                       title: "フォロワー",
+                      whoCaresMeMode: WhoCaresMeMode.FOLLOWED
                     );
                   }
               ),
@@ -75,6 +77,7 @@ class ProfileBio extends StatelessWidget {
                       context: context,
                       score: (snapshot.hasData ) ? snapshot.data! : 0,
                       title: "フォロー",
+                      whoCaresMeMode: WhoCaresMeMode.FOLLOWINGS
                     );
                   }
               ),
@@ -86,20 +89,25 @@ class ProfileBio extends StatelessWidget {
     );
   }
   //何個も同じもの使うので別わけ
-  _userRecodeWidget({required BuildContext context, required int score, required String title}) {
+  _userRecodeWidget({required BuildContext context, required int score, required String title, WhoCaresMeMode? whoCaresMeMode}) {
     return Expanded(
       flex: 1,
-      child: Column(
-        children: [
-          Text(
-            score.toString(),
-            style: profileRecodeScoreTextStyle,
-          ),
-          Text(
-            title,
-            style: profileRecodeTitleTextStyle,
-          )
-        ],
+      child: GestureDetector(
+        onTap: whoCaresMeMode == null
+        ? null
+        : () => checkFollowUsers(context, whoCaresMeMode),
+        child: Column(
+          children: [
+            Text(
+              score.toString(),
+              style: profileRecodeScoreTextStyle,
+            ),
+            Text(
+              title,
+              style: profileRecodeTitleTextStyle,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -149,6 +157,15 @@ class ProfileBio extends StatelessWidget {
   _unFollow(BuildContext context) {
     final profileViewModel = context.read<ProfileViewModel>();
     profileViewModel.unFollow();
+  }
+  //フォローやフォロワーの詳細画面
+  checkFollowUsers(BuildContext context, WhoCaresMeMode whoCaresMeMode) {
+    final profileViewModel = context.read<ProfileViewModel>();
+    final profileUser = profileViewModel.profileUser;
+
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => WhoCaresMeScreen(mode: whoCaresMeMode, id: profileUser.userId,)
+    ));
   }
 
 
