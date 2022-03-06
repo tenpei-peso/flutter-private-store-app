@@ -9,6 +9,9 @@ import 'package:pesostagram/deta_models/post.dart';
 import 'package:pesostagram/deta_models/user.dart';
 import 'package:pesostagram/models/repositories/user_repository.dart';
 
+import '../../deta_models/item.dart';
+import '../../deta_models/owner.dart';
+
 class DatabaseManager {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -279,6 +282,35 @@ class DatabaseManager {
         .collection("followers").doc(currentUser.userId)
         .delete();
 
+  }
+
+  Future<List<Owner>> getOwners() async {
+    final query = await _db.collection("owner").get();
+    if (query.docs.length == 0) return [];
+
+    var results = <Owner>[];
+    await _db.collection("owner").get()
+        .then((value) {
+      value.docs.forEach((element) {
+        results.add(Owner.fromMap(element.data()));
+      });
+    });
+    return results;
+  }
+
+  //オーナーIdから一致するitemとってくる
+  Future<List<Item>> getItemByOwnerId(String ownerId) async {
+    final query = await _db.collection("items").where("ownerId", isEqualTo: ownerId).get();
+    if (query.docs.length == 0) return [];
+
+    var results = <Item>[];
+    await _db.collection("items").where("ownerId", isEqualTo: ownerId).get()
+      .then((value) {
+        value.docs.forEach((element) {
+          results.add(Item.fromMap(element.data()));
+        });
+      });
+    return results;
   }
 
 

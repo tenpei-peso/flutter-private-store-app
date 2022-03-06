@@ -11,6 +11,7 @@ import 'package:provider/single_child_widget.dart';
 
 import '../view_models/comments_view_model.dart';
 import '../view_models/feed_view_model.dart';
+import '../view_models/map_view_model.dart';
 import '../view_models/profile_view_model.dart';
 import '../view_models/search_view_model.dart';
 
@@ -80,6 +81,12 @@ List<SingleChildWidget> viewModels = [
   ChangeNotifierProvider<WhoCaresMeViewModel>(
     create: (context) => WhoCaresMeViewModel(
       userRepository: context.read<UserRepository>(),
+    ),
+  ),
+  ChangeNotifierProvider<MapViewModel>(
+    create: (context) => MapViewModel(
+      userRepository: context.read<UserRepository>(),
+      postRepository: context.read<PostRepository>(),
     ),
   ),
 ];

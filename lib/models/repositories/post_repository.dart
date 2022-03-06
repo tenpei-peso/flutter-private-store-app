@@ -12,6 +12,8 @@ import 'package:pesostagram/models/location/location_manager.dart';
 import 'package:pesostagram/utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../deta_models/item.dart';
+
 class PostRepository {
   final DatabaseManager dbManager;
   final LocationManager locationManager;
@@ -120,7 +122,11 @@ class PostRepository {
   }
 
   Future<void> deletePost(String postId, String imageStoragePath) async {
-    await dbManager.deletePost(postId, imageStoragePath);
+    return await dbManager.deletePost(postId, imageStoragePath);
+  }
+  //オーナーIdから一致するitemとってくる
+  Future<List<Item>> getItemByOwnerId(String ownerId) async {
+    return await dbManager.getItemByOwnerId(ownerId);
   }
 
 

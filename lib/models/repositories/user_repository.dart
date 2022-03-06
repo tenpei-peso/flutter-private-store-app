@@ -7,6 +7,8 @@ import 'package:pesostagram/models/db/database_manager.dart';
 import 'package:pesostagram/utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../deta_models/owner.dart';
+
 class UserRepository {
   final DatabaseManager dbManager;
 
@@ -133,6 +135,10 @@ class UserRepository {
     return (await dbManager.getFollowingUserIds(profileUser.userId)).length;
 
   }
+  //owner情報とってくる
+  Future<List<Owner>> getOwners() async {
+    return await dbManager.getOwners();
+  }
 
   Future<void> updateProfile(User profileUser, String name, String bio, String photoUrl, bool isImageFromFile) async {
     var updatePhotoUrl;
@@ -197,5 +203,6 @@ class UserRepository {
     return result;
 
   }
+
 
   }

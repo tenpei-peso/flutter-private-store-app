@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pesostagram/utils/constants.dart';
 import 'package:pesostagram/view/activities/pages/activities_page.dart';
 import 'package:pesostagram/view/feed/pages/feed_page.dart';
+import 'package:pesostagram/view/map/pages/map_page.dart';
 import 'package:pesostagram/view/post/pages/post_page.dart';
 import 'package:pesostagram/view/profile/pages/profile_page.dart';
 import 'package:pesostagram/view/search/pages/search_page.dart';
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     _pages = [
       FeedPage(),
+      MapPage(),
       PostPage(),
       ActivitiesPage(),
       ProfilePage(profileMode: ProfileMode.MYSELF,),
@@ -45,10 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: FaIcon(FontAwesomeIcons.home, color: Colors.green,),
               label: "ホーム",
           ),
-          // BottomNavigationBarItem(
-          //     icon: FaIcon(FontAwesomeIcons.map, color: Colors.green),
-          //     label: "マップ",
-          // ),
+          BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.map, color: Colors.green),
+              label: "マップ",
+          ),
           BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.plusSquare, color: Colors.green),
               label: "投稿",
