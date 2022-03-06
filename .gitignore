@@ -1,3 +1,4 @@
+!*.gitignore
 # Miscellaneous
 *.class
 *.log
@@ -30,6 +31,7 @@
 .pub-cache/
 .pub/
 /build/
+firebase_options
 
 # Web related
 lib/generated_plugin_registrant.dart

@@ -8,6 +8,7 @@ class SearchPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.search),
+        backgroundColor: Colors.green,
         title: InkWell(
           splashColor: Colors.white12,
           child: Text("友達を追加・検索"),

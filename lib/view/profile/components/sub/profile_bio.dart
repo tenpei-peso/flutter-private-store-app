@@ -19,15 +19,6 @@ class ProfileBio extends StatelessWidget {
 
     return Column(
       children: [
-        //ユーザー名前
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Container(
-            alignment: const Alignment(0, -1),
-            child: Text(profileViewModel.profileUser.inAppUserName, style: profileRecodeScoreTextStyle,),
-          ),
-        ),
-
         //プロフ編集
         Container(
           height: 110,
